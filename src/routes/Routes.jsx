@@ -5,6 +5,7 @@ import {
 import Home from "../pages/Home/Home";
 import ErrorPage from "../pages/Home/ErrorPage/ErrorPage";
 import MainLayout from "../layout/MainLayout";
+import Menu from "../pages/Menu/Menu";
 
 
 
@@ -18,6 +19,11 @@ import MainLayout from "../layout/MainLayout";
           path: "/",
           element: <Home/>,
         },
+        {
+          path: "/menu",
+          element: <Menu></Menu>
+        },
+
       ],
     },
   ]);
