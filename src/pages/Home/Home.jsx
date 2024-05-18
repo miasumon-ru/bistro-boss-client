@@ -3,6 +3,7 @@ import Banner from "./Banner/Banner";
 import Featured from "./Featured/Featured";
 import PopularMenu from "./PopularMenu/PopularMenu";
 import Slider from "./Slider/Slider";
+import Testimonial from "./Testimonial/Testimonial";
 
 const Home = () => {
     return (
@@ -12,6 +13,7 @@ const Home = () => {
             <PopularMenu></PopularMenu>
 
             <Featured></Featured>
+            <Testimonial></Testimonial>
         </div>
     );
 };
