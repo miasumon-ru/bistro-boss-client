@@ -6,6 +6,7 @@ import Home from "../pages/Home/Home";
 import ErrorPage from "../pages/Home/ErrorPage/ErrorPage";
 import MainLayout from "../layout/MainLayout";
 import Menu from "../pages/Menu/Menu";
+import Order from "../pages/Order/Order";
 
 
 
@@ -22,6 +23,10 @@ import Menu from "../pages/Menu/Menu";
         {
           path: "/menu",
           element: <Menu></Menu>
+        },
+        {
+          path: "/order",
+          element: <Order></Order>
         },
 
       ],
