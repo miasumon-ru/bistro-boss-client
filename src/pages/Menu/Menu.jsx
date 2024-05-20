@@ -29,7 +29,7 @@ console.log(deserts)
 
             <Cover
             img={img}
-            title={"Our Menu"}
+            title={"menu"}
             ></Cover>
 
             <PopularMenu></PopularMenu>
@@ -37,25 +37,25 @@ console.log(deserts)
             <MenuCategory
             items={deserts}
             img={desertImg}
-            title={"Our Desserts"}
+            title={"desert"}
             ></MenuCategory>
 
             <MenuCategory
             items={soup}
             img={soupImg}
-            title={"Our Soup"}
+            title={"soup"}
             ></MenuCategory>
 
             <MenuCategory
             items={salad}
             img={saladImg}
-            title={"Our Salad"}
+            title={"salad"}
             ></MenuCategory>
 
             <MenuCategory
             items={pizza}
             img={pizzaImg}
-            title={"Our Pizza"}
+            title={"pizza"}
             ></MenuCategory>
 
 
