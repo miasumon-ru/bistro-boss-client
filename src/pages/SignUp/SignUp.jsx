@@ -1,13 +1,16 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../provider/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 
 const SignUp = () => {
 
-    const { createUser } = useContext(AuthContext)
+    const { createUser, profileUpdate, logOut } = useContext(AuthContext)
+
+    const navigate = useNavigate()
 
 
 
@@ -25,14 +28,50 @@ const SignUp = () => {
 
         const email = data.email
         const password = data.password
+        const photoURL = data.photoURL
 
-        console.log(email, password, name)
+        console.log(email, password, name, photoURL)
 
-        createUser(email, password)
+        createUser(email, password,name)
         .then(res => {
                 console.log(res.user)
 
-                reset()
+                profileUpdate({
+                    displayName : name,
+                    photoURL : photoURL
+                })
+                .then(()=> {
+                    console.log("profile is updated ")
+
+                    // logout after successful registration
+
+                    logOut()
+                    .then(()=> {
+                        console.log("logout after registration")
+
+                        // navigate to the login page after registration
+                        reset()
+
+                        Swal.fire({
+                            position: "top-center",
+                            icon: "success",
+                            title: "Registration is successful and please login",
+                            showConfirmButton: false,
+                            timer: 2500
+                          });
+                       setTimeout(()=> {
+
+                        navigate("/login")
+
+                       },2500)
+                    })
+                    .catch(error => console.log(error.message))
+
+                })
+                .catch(error => console.log(error.message))
+
+
+                
             })
        .catch(error => {
         console.log(error.message)
@@ -59,6 +98,15 @@ const SignUp = () => {
                             <input type="text" {...register("name", { required: true })} placeholder="Name" className="input input-bordered" required />
 
                             {errors.name?.type === 'required' && <span className="text-red-600">Name field is required</span>}
+
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text"> Photo URL </span>
+                            </label>
+                            <input type="text" {...register("photoURL", { required: true })} placeholder="PhotoURL" className="input input-bordered" required />
+
 
                         </div>
 
