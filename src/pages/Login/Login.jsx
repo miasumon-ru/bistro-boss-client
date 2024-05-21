@@ -1,23 +1,27 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form"
 
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from "../../provider/AuthProvider";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+import Swal from "sweetalert2";
 
 
 const Login = () => {
 
-    const captchaRef = useRef(null)
-
+  
+    const navigate = useNavigate()
     const [disabled, setDisabled] = useState(true)
 
     const {login} = useContext(AuthContext)
 
+    const location = useLocation()
+    console.log(location)
+
     const {
         register,
-        handleSubmit,
-
-        formState: { errors },
+        handleSubmit
     } = useForm()
 
     const handleLogin = (data) => {
@@ -31,8 +35,20 @@ const Login = () => {
         login(email, password)
         .then(res => {
             console.log(res.user)
+            Swal.fire({
+                position: "top-center",
+                icon: "success",
+                title: "Login is successful",
+                showConfirmButton: false,
+                timer: 1500
+              });
+
+           setTimeout(()=> {
+            navigate(location.state || '/') 
+
+           }, 2000)
         })
-        .then(error => console.log(error.message))
+        .catch(error => console.log(error.message))
 
     }
 
@@ -41,9 +57,11 @@ const Login = () => {
     }, [])
 
 
-    const handleCaptcha = () => {
+    const handleCaptcha = (e) => {
 
-        const userCaptchaValue = captchaRef.current.value
+        const userCaptchaValue = e.target.value
+
+        console.log(e.target.value)
 
         if(validateCaptcha(userCaptchaValue)){
             setDisabled(false)
@@ -76,7 +94,7 @@ const Login = () => {
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="text" {...register("password")} placeholder="password" className="input input-bordered" required />
+                            <input type="password" {...register("password")} placeholder="password" className="input input-bordered" required />
 
                         </div>
 
@@ -85,14 +103,18 @@ const Login = () => {
                                 <LoadCanvasTemplate />
                             </div>
                             
-                            <input ref={captchaRef}  type="text" name="captcha"  placeholder="type captcha" className="input input-bordered" required />
+                            <input onBlur={handleCaptcha}  type="text" name="captcha"  placeholder="type captcha" className="input input-bordered"  />
 
-                            <button onClick={handleCaptcha} className="btn btn-xs my-2"> validate</button>
+                            
 
                         </div>
 
                         <div className="form-control mt-6">
-                            <button disabled={disabled} className="btn btn-primary">Login</button>
+                            <button disabled={false} className="btn btn-primary">Login</button>
+                        </div>
+
+                        <div>
+                            <p> New here ? Please <Link to={'/signUp'}> <span className="text-xl text-blue-400" > Register </span> </Link> </p>
                         </div>
                     </form>
                 </div>
