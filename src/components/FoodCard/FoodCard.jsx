@@ -1,9 +1,91 @@
-
+import Swal from "sweetalert2";
+import useAuth from "../../hooks/useAuth";
+import {  useLocation, useNavigate } from "react-router-dom";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useCart from "../../hooks/useCart";
 
 
 const FoodCard = ({item}) => {
 
-    const { name, image, price, recipe } = item
+    const axiosSecure = useAxiosSecure()
+
+    const [,refetch] = useCart()
+
+    const { name, image, price, recipe, _id } = item
+
+
+
+    const navigate = useNavigate()
+
+    const  location = useLocation()
+
+
+    const {user} = useAuth()
+
+    const handleAddToCart = () => {
+
+    
+        if(user && user?.email){
+           
+            const cartItem = {
+                menuId : _id,
+                email : user?.email,
+                name,
+                image,
+                price
+            }
+
+            console.log(cartItem)
+
+           axiosSecure.post("/carts", cartItem)
+           .then(res => {
+            console.log(res.data)
+
+            if(res.data.insertedId){
+                Swal.fire({
+                    icon: "success",
+                    title: `${name} is added `,
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+            }
+
+            refetch()
+
+           })
+           .catch(error => {
+            console.log(error.message)
+           })
+
+        }
+        else {
+            Swal.fire({
+                title: "Login",
+                text: "Please Login before Add to Cart",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes , login!"
+              }).then((result) => {
+                if (result.isConfirmed) {
+
+                //   Swal.fire({
+                //     title: "Deleted!",
+                //     text: "Your file has been deleted.",
+                //     icon: "success"
+                //   });
+    
+
+                navigate('/login', {state : {from : location}} )
+
+            
+
+                }
+              });
+        }
+
+    }
 
     return (
         <div className="card bg-base-100 shadow-xl">
@@ -14,7 +96,7 @@ const FoodCard = ({item}) => {
                 <p> {recipe} </p>
                 
                 <div className="card-actions">
-                    <button className="btn btn-primary my-2"> Add To Card </button>
+                    <button onClick={handleAddToCart} className="btn btn-primary my-2"> Add To Card </button>
                 </div>
             </div>
         </div>

@@ -11,9 +11,8 @@ const SignUp = () => {
     const { createUser, profileUpdate, logOut } = useContext(AuthContext)
 
     const navigate = useNavigate()
-
-
-
+  
+ 
     const {
         register,
         handleSubmit,
@@ -85,6 +84,8 @@ const SignUp = () => {
             <div className="hero-content flex-col ">
                 <div className="text-center lg:text-left">
                     <h1 className="text-5xl font-bold">Register now</h1>
+
+                
 
                 </div>
                 <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100 ">

@@ -17,7 +17,10 @@ const Login = () => {
     const {login} = useContext(AuthContext)
 
     const location = useLocation()
-    console.log(location)
+    
+    const from = location?.state?.from?.pathname || '/'
+
+    console.log('state in the login ', from)
 
     const {
         register,
@@ -44,7 +47,7 @@ const Login = () => {
               });
 
            setTimeout(()=> {
-            navigate(location.state || '/') 
+            navigate(from , {replace : true}) 
 
            }, 2000)
         })

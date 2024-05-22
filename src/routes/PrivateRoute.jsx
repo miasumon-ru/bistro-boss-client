@@ -9,7 +9,7 @@ const PrivateRoute = ({children}) => {
     const {user, loading} = useContext(AuthContext)
 
     const location = useLocation()
-    console.log(location.pathname)
+   
 
     if(loading){
         return <progress className="progress w-full min-h-screen flex flex-col items-center"></progress>
@@ -20,7 +20,7 @@ const PrivateRoute = ({children}) => {
     }
 
 
-    return <Navigate state={location.pathname} to={'/login'}></Navigate>
+    return <Navigate state={{from : location}} replace to={'/login'}></Navigate>
 };
 
 export default PrivateRoute;
