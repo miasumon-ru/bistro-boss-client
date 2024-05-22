@@ -38,7 +38,7 @@ const Navbar = () => {
         <li> <NavLink to={'/order/salad'}> Order Food  </NavLink> </li>
 
         <li> <NavLink to={'/signUp'}> Sign Up </NavLink> </li>
-        <li  className=""> <NavLink to={'/'}> 
+        <li  className=""> <NavLink to={'/dashboard/cart'}> 
            
            Cart <div className="badge "> {cart.length} </div>
           
