@@ -3,12 +3,16 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
 
 
 
 const SignUp = () => {
 
     const { createUser, profileUpdate, logOut } = useContext(AuthContext)
+
+    const axiosPublic = useAxiosPublic()
 
     const navigate = useNavigate()
   
@@ -43,6 +47,25 @@ const SignUp = () => {
                     console.log("profile is updated ")
 
                     // logout after successful registration
+
+                    // user info is stored in the database
+
+                    const userInfo = {
+                        name : data.name,
+                        email : data.email
+                    }
+
+                    axiosPublic.post('/users', userInfo)
+                    .then( res => {
+
+                        console.log(res.data)
+
+
+
+                    })
+
+                    
+
 
                     logOut()
                     .then(()=> {
@@ -83,12 +106,13 @@ const SignUp = () => {
         <div className="hero min-h-screen bg-base-200 ">
             <div className="hero-content flex-col ">
                 <div className="text-center lg:text-left">
-                    <h1 className="text-5xl font-bold">Register now</h1>
+                    <h1 className="text-5xl font-bold"> Register now </h1>
 
                 
 
                 </div>
                 <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100 ">
+
                     <form onSubmit={handleSubmit(handleSignUp)} className="card-body">
 
 
@@ -145,12 +169,14 @@ const SignUp = () => {
 
 
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Register</button>
+                            <button className="btn btn-primary"> Register </button>
                         </div>
 
                         <div>
                             <p> Already have an account ? Please <Link to={'/login'}> <span className="text-xl text-blue-400" > Login </span> </Link> </p>
                         </div>
+
+                        <SocialLogin></SocialLogin>
                     </form>
                 </div>
             </div>
