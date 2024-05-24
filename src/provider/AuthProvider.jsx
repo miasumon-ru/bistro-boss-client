@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
 
 import { GoogleAuthProvider } from "firebase/auth";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 const googleProvider = new GoogleAuthProvider();
 
 
@@ -12,6 +13,8 @@ const AuthProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+
+    const axiosPublic = useAxiosPublic()
 
     // create user
 
@@ -61,6 +64,40 @@ const AuthProvider = ({children}) => {
         console.log(currentUser)
             setUser(currentUser)
             setLoading(false)
+
+
+            if(currentUser){
+                // get the token and store to the client side 
+
+                const userInfo = {
+                    email : currentUser.email
+                }
+
+                axiosPublic.post('/jwt', userInfo)
+                .then(res => {
+                    console.log(res.data)
+
+                    if(res.data.token){
+                        localStorage.setItem('access-token', res.data.token)
+                    }
+
+                })
+
+       
+
+
+            }
+            else{
+                // TODO : remove token (if token stored in the client side)
+
+                localStorage.removeItem('access-token')
+
+
+
+            }
+
+
+
         })
 
         return () => {
