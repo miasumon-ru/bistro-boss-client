@@ -44,7 +44,7 @@ const Dashboard = () => {
 
                             <li className=" font-bold"><NavLink className='flex flex-row items-center gap-2' to={'/dashboard/addItems'}> <FaUtensils></FaUtensils> Add Items </NavLink></li>
 
-                            <li className=" font-bold"><NavLink className='flex flex-row items-center gap-2' to={'/dashboard/bookings'}> <FaList></FaList> Manage Items </NavLink></li>
+                            <li className=" font-bold"><NavLink className='flex flex-row items-center gap-2' to={'/dashboard/manageItems'}> <FaList></FaList> Manage Items </NavLink></li>
 
                             <li className=" font-bold"><NavLink className='flex flex-row items-center gap-2' to={'/dashboard/review'}> <FaBook></FaBook> Manage Bookings </NavLink></li>
 

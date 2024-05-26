@@ -2,12 +2,15 @@ import { useForm } from "react-hook-form";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 
 import useAxiosPublic from '../../../hooks/useAxiosPublic'
+import useAxiosSecure from '../../../hooks/useAxiosSecure.jsx'
+import Swal from "sweetalert2";
 
 
 
 const AddItem = () => {
 
     const axiosPublic = useAxiosPublic()
+    const axiosSecure = useAxiosSecure()
 
     const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY
 
@@ -38,7 +41,37 @@ const AddItem = () => {
 
     )
 
-    console.log(res.data.data.display_url)
+    if(res.data.success){
+        // now send the menu item data to the server with image
+
+        const menuItem = {
+
+            name : data.recipeName,
+            recipe : data.recipeDetails,
+            image : res.data.data.display_url,
+            category : data.category,
+            price : parseFloat(data.price)
+            
+        
+
+        }
+
+        console.log(menuItem)
+
+        const menuRes = await axiosSecure.post('/menu', menuItem)
+
+        if(menuRes.data.insertedId){
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: `${name} is added to the menuCollection`,
+                showConfirmButton: false,
+                timer: 1500
+              });
+        }
+        
+        
+    }
 
         
 
