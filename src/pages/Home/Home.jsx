@@ -5,15 +5,15 @@ import PopularMenu from "./PopularMenu/PopularMenu";
 import Slider from "./Slider/Slider";
 import Testimonial from "./Testimonial/Testimonial";
 
-import {Helmet} from "react-helmet";
+
 
 const Home = () => {
     return (
         <div>
 
-            <Helmet>
+            {/* <Helmet>
                 <title> Home || Bistro Boss </title>
-            </Helmet>
+            </Helmet> */}
 
 
             <Banner></Banner>

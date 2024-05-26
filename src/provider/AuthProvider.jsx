@@ -104,7 +104,7 @@ const AuthProvider = ({children}) => {
             return unSubscribe()
         }
 
-    },[])
+    },[axiosPublic])
 
     const AuthInfo = {
 

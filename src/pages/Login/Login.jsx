@@ -40,7 +40,7 @@ const Login = () => {
         .then(res => {
             console.log(res.user)
             Swal.fire({
-                position: "top-center",
+           
                 icon: "success",
                 title: "Login is successful",
                 showConfirmButton: false,
