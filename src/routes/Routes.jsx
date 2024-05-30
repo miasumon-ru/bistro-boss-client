@@ -16,6 +16,7 @@ import AdminRoutes from "./AdminRoutes";
 import AddItem from "../pages/Dashboard/AddItem/AddItem";
 import ManageItem from "../pages/Dashboard/ManageItem/ManageItem";
 import UpdateItem from "../pages/Dashboard/UpdateItem/UpdateItem";
+import Payment from "../pages/Dashboard/Payment/Payment";
 
 
 
@@ -56,6 +57,7 @@ const router = createBrowserRouter([
     path: 'dashboard',
     element : <Dashboard></Dashboard>,
     children : [
+      // normal users
 
       {
 
@@ -65,6 +67,15 @@ const router = createBrowserRouter([
    
 
       },
+      {
+
+        path : 'payment',
+        element : <Payment></Payment>
+   
+
+      },
+
+      // admin users
       {
 
         path : 'users',
