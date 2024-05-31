@@ -3,19 +3,23 @@ import { useEffect, useState } from "react";
 import useCart from "../../../hooks/useCart";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 
 
 const CheckoutForm = () => {
 
-        const [clientSecret, setClientSecret] = useState('')
+    const [clientSecret, setClientSecret] = useState('')
 
-        const [transactionId, setTransactionId] = useState('')
+    const [transactionId, setTransactionId] = useState('')
+
+    const navigate = useNavigate()
 
 
-        const {user} = useAuth()
+    const { user } = useAuth()
 
-    const [cart] = useCart()
+    const [cart, refetch] = useCart()
 
     const [error, setError] = useState('')
 
@@ -28,21 +32,23 @@ const CheckoutForm = () => {
 
 
     // 
-    
-    const totalPrice = cart.reduce((total , item)=> total + item.price , 0)
+
+    const totalPrice = cart.reduce((total, item) => total + item.price, 0)
 
     console.log(totalPrice)
 
-    
 
-    useEffect(()=> {
 
-        axiosSecure.post('/create-payment-intent', {price : totalPrice})
-        .then(res => {
-       
+    useEffect(() => {
 
-            setClientSecret(res.data.clientSecret)
-        })
+        if (totalPrice > 0) {
+            axiosSecure.post('/create-payment-intent', { price: totalPrice })
+                .then(res => {
+
+
+                    setClientSecret(res.data.clientSecret)
+                })
+        }
 
 
     }, [axiosSecure, totalPrice])
@@ -75,49 +81,49 @@ const CheckoutForm = () => {
             card
         })
 
-        if(error){
-            console.log( 'Error', error)
+        if (error) {
+            console.log('Error', error)
 
             setError(error.message)
-        }else{
-            console.log( 'Payment Method', paymentMethod)
+        } else {
+            console.log('Payment Method', paymentMethod)
 
             setError('')
         }
 
         // confirm payment
 
-        const {paymentIntent, error : confirmError} = await stripe.confirmCardPayment(clientSecret, {
+        const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
 
-            payment_method : {
-                card : card,
-                billing_details : {
-                    email : user?.email || 'anonymous' ,
-                    name : user?.displayName | 'anonymous'
-                } 
+            payment_method: {
+                card: card,
+                billing_details: {
+                    email: user?.email || 'anonymous',
+                    name: user?.displayName | 'anonymous'
+                }
             }
 
         })
 
-        if(confirmError){
+        if (confirmError) {
             console.log("confirm error")
         }
-        else{
+        else {
             console.log("payment intent", paymentIntent)
 
-            if(paymentIntent.status === 'succeeded'){
+            if (paymentIntent.status === 'succeeded') {
                 console.log('transaction id', paymentIntent.id)
 
                 setTransactionId(paymentIntent.id)
 
                 // save the payment in the database
                 const payment = {
-                    email : user?.email,
-                    price : totalPrice,
-                    date : new Date (),
-                    cartId  : cart.map(item => item._id),
-                    menuId : cart.map(item => item.menuId),
-                    status : 'pending'
+                    email: user?.email,
+                    price: totalPrice,
+                    date: new Date(),
+                    cartId: cart.map(item => item._id),
+                    menuId: cart.map(item => item.menuId),
+                    status: 'pending'
 
 
                 }
@@ -128,6 +134,31 @@ const CheckoutForm = () => {
                 const res = await axiosSecure.post('/payments', payment)
 
                 console.log("payment saved", res.data)
+
+                if (res.data.insertedId) {
+
+                    // refetch the cart item
+
+                    refetch()
+
+                    Swal.fire({
+
+                        icon: "success",
+                        title: "Payment has been successful",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    // navigate to the payment history
+
+                    setTimeout(()=> {
+                        navigate('/dashboard/paymentHistory')
+                    }, 2500)
+
+
+                }
+
+
 
 
             }
@@ -170,7 +201,7 @@ const CheckoutForm = () => {
             <p className="text-red-400 "> {error} </p>
 
 
-            { transactionId && <p className="text-green-600"> Your transaction id is : {transactionId} </p> }
+            {transactionId && <p className="text-green-600"> Your transaction id is : {transactionId} </p>}
 
 
 

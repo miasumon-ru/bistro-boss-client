@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { FaAd, FaBook, FaHome, FaList, FaRestroom, FaShoppingCart, FaStreetView, FaUser, FaUtensils, FaVoicemail } from "react-icons/fa";
+import { FaAd, FaBook, FaHistory, FaHome, FaList,  FaShoppingCart, FaStreetView, FaUser, FaUtensils, FaVoicemail } from "react-icons/fa";
 import { FaBowlFood } from "react-icons/fa6";
 import useAdmin from "../hooks/useAdmin";
 import useCart from "../hooks/useCart";
@@ -68,7 +68,7 @@ const Dashboard = () => {
 
                             <li className=" font-bold"><NavLink className='flex flex-row items-center gap-2' to={'/dashboard/cart'}> <FaShoppingCart></FaShoppingCart> My Cart {cart.length} </NavLink></li>
 
-                            <li className=" font-bold"><NavLink className='flex flex-row items-center gap-2' to={'/dashboard/reservation'}> <FaRestroom></FaRestroom> Reservation</NavLink></li>
+                            <li className=" font-bold"><NavLink className='flex flex-row items-center gap-2' to={'/dashboard/paymentHistory'}> <FaHistory></FaHistory> Payment History </NavLink></li>
 
                             <li className=" font-bold"><NavLink className='flex flex-row items-center gap-2' to={'/dashboard/bookings'}> <FaAd></FaAd> Bookings </NavLink></li>
 
